@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Tracker — Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="nav">
+        <h1>My Applications</h1>
+        <div>
+          <button onclick="goToAddJob()">+ Add Job</button>
+          <button class="danger" onclick="logout()">Logout</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats" id="stats">
+        <div class="stat-card">
+          <h3 id="total">0</h3>
+          <p>Total</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="applied">0</h3>
+          <p>Applied</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="interview">0</h3>
+          <p>Interview</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="offer">0</h3>
+          <p>Offer</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="rejected">0</h3>
+          <p>Rejected</p>
+        </div>
+      </div>
+
+      <!-- Jobs List -->
+      <div id="jobs-list"></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

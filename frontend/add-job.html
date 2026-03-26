@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Tracker — Add Job</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="nav">
+        <h1>Add New Job</h1>
+        <button onclick="goToDashboard()">← Back</button>
+      </div>
+
+      <div class="card">
+        <input type="text" id="company" placeholder="Company name" />
+        <input type="text" id="role" placeholder="Job role" />
+        <select id="status">
+          <option value="applied">Applied</option>
+          <option value="interview">Interview</option>
+          <option value="offer">Offer</option>
+          <option value="rejected">Rejected</option>
+        </select>
+        <button onclick="addJob()">Save Job</button>
+        <p id="message"></p>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

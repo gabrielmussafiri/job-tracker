@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 
@@ -21,6 +22,7 @@ def create_app():
     # Initialize extensions with app
     db.init_app(app)
     migrate.init_app(app,db)
+    CORS(app)
     
     #IMport models so flask Knows the table
     from app.models import User, Job , Note
