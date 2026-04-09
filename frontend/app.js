@@ -63,13 +63,13 @@ async function login() {
 // ── Logout ────────────────────────────────
 function logout() {
   localStorage.removeItem("user_id");
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 // ── Load dashboard ────────────────────────
 async function loadDashboard() {
   const user_id = getUserId();
-  if (!user_id) return (window.location.href = "login.html");
+  if (!user_id) return (window.location.href = "index.html");
 
   await loadStats(user_id);
   await loadJobs(user_id);
@@ -119,7 +119,7 @@ async function loadJobs(user_id) {
 // ── Add job ───────────────────────────────
 async function addJob() {
   const user_id = getUserId();
-  if (!user_id) return (window.location.href = "login.html");
+  if (!user_id) return (window.location.href = "index.html");
 
   const company = document.getElementById("company").value;
   const role = document.getElementById("role").value;
