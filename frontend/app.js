@@ -19,6 +19,12 @@ async function register() {
   const password = document.getElementById("register-password").value;
   const message = document.getElementById("register-message");
 
+  if (!email || !password) {
+    message.className = "error";
+    message.textContent = "Please fill in all required fields";
+    return;
+  }
+
   const response = await fetch(`${API}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -29,10 +35,12 @@ async function register() {
 
   if (response.ok) {
     message.className = "success";
-    message.textContent = "Account created! You can now login.";
+    message.textContent = "✓ Account created! You can now login.";
+    document.getElementById("register-email").value = "";
+    document.getElementById("register-password").value = "";
   } else {
     message.className = "error";
-    message.textContent = data.error;
+    message.textContent = data.error || "Registration failed";
   }
 }
 
@@ -94,26 +102,32 @@ async function loadJobs(user_id) {
   const container = document.getElementById("jobs-list");
 
   if (jobs.length === 0) {
-    container.innerHTML = "<p>No jobs yet. Add your first one!</p>";
+    container.innerHTML = `
+      <h2><i class="fas fa-briefcase"></i> Your Jobs</h2>
+      <p class="no-jobs">No jobs yet. Add your first one!</p>
+    `;
     return;
   }
 
-  container.innerHTML = jobs
-    .map(
-      (job) => `
-        <div class="job-card">
-            <div class="job-info">
-                <h3>${job.company}</h3>
-                <p>${job.role}</p>
-            </div>
-            <div>
-                <span class="status ${job.status}">${job.status}</span>
-                <button class="danger" onclick="deleteJob(${job.id})">Delete</button>
-            </div>
-        </div>
-    `,
-    )
-    .join("");
+  container.innerHTML = `
+    <h2><i class="fas fa-briefcase"></i> Your Jobs</h2>
+    ${jobs
+      .map(
+        (job) => `
+          <div class="job-card">
+              <div class="job-info">
+                  <h3>${job.company}</h3>
+                  <p>${job.role}</p>
+              </div>
+              <div class="job-actions">
+                  <span class="status ${job.status}">${job.status}</span>
+                  <button class="danger" onclick="deleteJob(${job.id})"><i class="fas fa-trash"></i> Delete</button>
+              </div>
+          </div>
+      `,
+      )
+      .join("")}
+  `;
 }
 
 // ── Add job ───────────────────────────────
@@ -126,6 +140,12 @@ async function addJob() {
   const status = document.getElementById("status").value;
   const message = document.getElementById("message");
 
+  if (!company || !role) {
+    message.className = "error";
+    message.textContent = "Please fill in all required fields";
+    return;
+  }
+
   const response = await fetch(`${API}/jobs/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -136,12 +156,13 @@ async function addJob() {
 
   if (response.ok) {
     message.className = "success";
-    message.textContent = "Job added successfully!";
+    message.textContent = "✓ Job added successfully!";
     document.getElementById("company").value = "";
     document.getElementById("role").value = "";
+    setTimeout(() => goToDashboard(), 1500);
   } else {
     message.className = "error";
-    message.textContent = data.error;
+    message.textContent = data.error || "Failed to add job";
   }
 }
 
