@@ -115,12 +115,13 @@ async function loadJobs(user_id) {
       .map(
         (job) => `
           <div class="job-card">
-              <div class="job-info">
+              <div class="job-info" style="cursor: pointer; flex: 1;" onclick="editJobClick(this)" data-job-id="${job.id}" data-company="${job.company}" data-role="${job.role}" data-status="${job.status}">
                   <h3>${job.company}</h3>
                   <p>${job.role}</p>
               </div>
               <div class="job-actions">
                   <span class="status ${job.status}">${job.status}</span>
+                  <button class="secondary" onclick="editJobClick(event.currentTarget.parentElement.previousElementSibling)" data-job-id="${job.id}"><i class="fas fa-edit"></i> Edit</button>
                   <button class="danger" onclick="deleteJob(${job.id})"><i class="fas fa-trash"></i> Delete</button>
               </div>
           </div>
@@ -168,6 +169,8 @@ async function addJob() {
 
 // ── Delete job ────────────────────────────
 async function deleteJob(job_id) {
+  if (!confirm("Are you sure you want to delete this job?")) return;
+  
   const user_id = getUserId();
 
   await fetch(`${API}/jobs/${job_id}`, {
@@ -177,6 +180,81 @@ async function deleteJob(job_id) {
   await loadJobs(user_id);
   await loadStats(user_id);
 }
+
+// ── Open edit modal ─────────────────────────
+function editJobClick(element) {
+  const jobId = element.dataset.jobId;
+  const company = element.dataset.company;
+  const role = element.dataset.role;
+  const status = element.dataset.status;
+  openEditModal(jobId, company, role, status);
+}
+
+function openEditModal(job_id, company, role, status) {
+  document.getElementById("edit-company").value = company;
+  document.getElementById("edit-role").value = role;
+  document.getElementById("edit-status").value = status;
+  document.getElementById("edit-message").textContent = "";
+  
+  document.getElementById("editModal").dataset.jobId = job_id;
+  document.getElementById("editModal").style.display = "flex";
+}
+
+// ── Close edit modal ────────────────────────
+function closeEditModal() {
+  document.getElementById("editModal").style.display = "none";
+  document.getElementById("edit-message").textContent = "";
+}
+
+// ── Save job changes ────────────────────────
+async function saveJobChanges() {
+  const jobId = document.getElementById("editModal").dataset.jobId;
+  const user_id = getUserId();
+  const company = document.getElementById("edit-company").value;
+  const role = document.getElementById("edit-role").value;
+  const status = document.getElementById("edit-status").value;
+  const message = document.getElementById("edit-message");
+
+  if (!company || !role) {
+    message.className = "error";
+    message.textContent = "Please fill in all required fields";
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API}/jobs/${jobId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ company, role, status }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      message.className = "success";
+      message.textContent = "✓ Job updated successfully!";
+      setTimeout(() => {
+        closeEditModal();
+        loadJobs(user_id);
+        loadStats(user_id);
+      }, 1000);
+    } else {
+      message.className = "error";
+      message.textContent = data.error || "Failed to update job";
+    }
+  } catch (error) {
+    message.className = "error";
+    message.textContent = "Error updating job";
+  }
+}
+
+// ── Close modal on outside click ─────────────
+window.onclick = function (event) {
+  const modal = document.getElementById("editModal");
+  if (event.target === modal) {
+    closeEditModal();
+  }
+};
 
 // ── Auto load dashboard ───────────────────
 if (window.location.pathname.includes("dashboard")) {
