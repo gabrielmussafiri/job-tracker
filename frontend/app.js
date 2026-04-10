@@ -170,7 +170,7 @@ async function addJob() {
 // ── Delete job ────────────────────────────
 async function deleteJob(job_id) {
   if (!confirm("Are you sure you want to delete this job?")) return;
-  
+
   const user_id = getUserId();
 
   await fetch(`${API}/jobs/${job_id}`, {
@@ -195,7 +195,7 @@ function openEditModal(job_id, company, role, status) {
   document.getElementById("edit-role").value = role;
   document.getElementById("edit-status").value = status;
   document.getElementById("edit-message").textContent = "";
-  
+
   document.getElementById("editModal").dataset.jobId = job_id;
   document.getElementById("editModal").style.display = "flex";
 }

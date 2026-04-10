@@ -68,15 +68,31 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2><i class="fas fa-edit"></i> Edit Job</h2>
-          <button class="modal-close" onclick="closeEditModal()">&times;</button>
+          <button class="modal-close" onclick="closeEditModal()">
+            &times;
+          </button>
         </div>
-        <form onsubmit="event.preventDefault(); saveJobChanges()">
+        <form
+          onsubmit="
+            event.preventDefault();
+            saveJobChanges();
+          "
+        >
           <div class="form-group">
-            <label for="edit-company"><i class="fas fa-building"></i> Company Name</label>
-            <input type="text" id="edit-company" placeholder="Company name" required />
+            <label for="edit-company"
+              ><i class="fas fa-building"></i> Company Name</label
+            >
+            <input
+              type="text"
+              id="edit-company"
+              placeholder="Company name"
+              required
+            />
           </div>
           <div class="form-group">
-            <label for="edit-role"><i class="fas fa-user-tie"></i> Job Role</label>
+            <label for="edit-role"
+              ><i class="fas fa-user-tie"></i> Job Role</label
+            >
             <input type="text" id="edit-role" placeholder="Job role" required />
           </div>
           <div class="form-group">
@@ -89,8 +105,12 @@
             </select>
           </div>
           <div class="modal-actions">
-            <button type="submit" class="primary"><i class="fas fa-save"></i> Save Changes</button>
-            <button type="button" class="secondary" onclick="closeEditModal()"><i class="fas fa-times"></i> Cancel</button>
+            <button type="submit" class="primary">
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+            <button type="button" class="secondary" onclick="closeEditModal()">
+              <i class="fas fa-times"></i> Cancel
+            </button>
           </div>
           <p id="edit-message"></p>
         </form>
